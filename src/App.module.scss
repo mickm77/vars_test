@@ -1,0 +1,24 @@
+$height: 100px;
+
+.item {
+  background-color:red;
+  transition: all 1s;
+  height: $height;
+
+  &:after {
+    height: $height;
+    background-color: gray;
+  }
+
+  .yore {
+    display: none;
+    background-color: pink;
+  }
+
+  &:focus {
+    background-color: green;
+    .yore {
+      display: block;
+    }
+  }
+}
