@@ -1,24 +1,63 @@
 $height: 100px;
+$cellWidth: 60px;
+$columns: 7;
+$rows: 5;
+$duration: 0.2s;
+
+@mixin range($min, $max) {
+  &:nth-of-type(n + #{$min}):nth-of-type(-n + #{$max}) {
+    @content;
+  }
+}
+
 
 .item {
   background-color:red;
-  transition: all 1s;
-  height: $height;
-
-  &:after {
-    height: $height;
-    background-color: gray;
-  }
-
+  transition: all $duration;
+  position: relative;
+  
+ 
   .yore {
-    display: none;
     background-color: pink;
+    transition: all $duration;
+    transition-delay: calc( 2.5 * 0.2s);
+    height: 1px;
+    display: grid;
+    grid-template: repeat($rows, $cellWidth) / repeat($columns, $cellWidth);
+    
+    .cell {
+      position: absolute;
+      opacity: 0;
+      transition: all;
+      
+      transform: translate(var(--x, 0), var(--y));
+      transition-delay: calc(#{$duration * 0} + (32 - var(--cell)) * 20ms);
+      transition-duration: $duration / 3;
+      
+      @for $i from 1 through 5 {
+        @include range(($i - 1) * 7 + 1, ($i - 1) * 7 + 7) {
+          --y: #{$cellWidth  * $i - $cellWidth * 0.5};
+        }
+      }
+      
+      @for $i from 1 through 7 {
+        &:nth-of-type(7n + #{$i}) {
+          --x: #{$cellWidth * 0.5 + ($i - 1) * $cellWidth};
+        }
+      }      
+    }
   }
-
+  
   &:focus {
     background-color: green;
     .yore {
-      display: block;
+      height: 360px;
+      transition-delay: 0s;
+      .cell {
+        transition-delay: calc(#{$duration * 0.5} + var(--cell) * 20ms);
+        opacity: 1;
+
+      }
     }
   }
 }
